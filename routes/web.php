@@ -1,13 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Course;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
 Route::get('/courses', function () {
-    return view('course');
+    $courses = Course::latest()->get();
+    return view('course', compact('courses'));
 })->name('courses');
 
 Route::get('/pricing', function () {
@@ -41,5 +43,24 @@ Route::get('/courses/junior-cybersecurity-analyst/apa-itu-cybersecurity', functi
 })->name('lesson');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+    $totalCourses = Course::count();
+    return view('dashboard', compact('totalCourses'));
+})->middleware('auth')->name('dashboard');
+
+Route::get('/talent-hub', function () {
+    return view('talent-hub');
+})->middleware('auth')->name('talent-hub');
+
+// --- Rute Khusus Admin ---
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/courses', [App\Http\Controllers\AdminController::class, 'storeCourse']);
+
+    Route::get('/admin/courses/{course}/lessons', [App\Http\Controllers\AdminController::class, 'manageLessons']);
+    Route::post('/admin/courses/{course}/lessons', [App\Http\Controllers\AdminController::class, 'storeLesson']);
+
+    // --- Rute Edit dan Hapus Materi ---
+    Route::get('/admin/lessons/{id}/edit', [App\Http\Controllers\AdminController::class, 'editLesson']);
+    Route::put('/admin/lessons/{id}', [App\Http\Controllers\AdminController::class, 'updateLesson']);
+    Route::delete('/admin/lessons/{id}', [App\Http\Controllers\AdminController::class, 'deleteLesson']);
+});

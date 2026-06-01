@@ -36,8 +36,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Kursus Aktif</p>
-                        <p class="text-4xl font-black text-black mt-0.5">2</p>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Kursus Tersedia</p>
+                        <p class="text-4xl font-black text-black mt-0.5">{{ $totalCourses }}</p>
                     </div>
                 </article>
 

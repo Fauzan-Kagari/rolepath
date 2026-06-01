@@ -110,7 +110,7 @@
 
                 <!-- Results Count -->
                 <div class="flex items-center justify-between mb-6">
-                    <p class="text-sm text-gray-500"><span class="font-bold text-black">3</span> kursus ditemukan</p>
+                    <p class="text-sm text-gray-500"><span class="font-bold text-black">{{ $courses->count() }}</span> kursus ditemukan</p>
                     <select class="text-sm border-2 border-gray-300 px-3 py-1.5 text-gray-700 focus:outline-none focus:border-black transition-colors bg-white">
                         <option>Terbaru</option>
                         <option>Populer</option>
@@ -121,103 +121,45 @@
                 <!-- Course Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-                    <!-- Card 1: GRATIS -->
-                    <article class="bg-white border-2 border-gray-200 flex flex-col group hover:border-black hover:shadow-[6px_6px_0px_0px_#0ABF35] transition-all duration-300">
-                        <div class="relative overflow-hidden">
-                            <img
-                                src="https://placehold.co/600x340/0f172a/0ABF35?text=Cybersecurity"
-                                alt="Cybersecurity & SOC Analyst"
-                                class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <span class="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-black border border-black">
-                                GRATIS
-                            </span>
-                        </div>
-                        <div class="p-5 flex flex-col flex-1">
-                            <span class="text-xs font-bold uppercase tracking-widest text-[#0ABF35] mb-1">Cybersecurity</span>
-                            <h3 class="font-bold text-gray-900 text-base leading-snug mb-2">Cybersecurity & SOC Analyst</h3>
-                            <p class="text-sm text-gray-500 leading-relaxed line-clamp-3 flex-1">
-                                Pelajari dasar-dasar keamanan siber, monitoring ancaman, dan respons insiden untuk menjadi SOC Analyst yang kompeten.
-                            </p>
-                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
-                                <div class="flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                                    <span class="font-medium">120 Hours</span>
+                    @forelse($courses as $course)
+                        <article class="bg-white border-2 border-gray-200 flex flex-col group hover:border-black hover:shadow-[6px_6px_0px_0px_#0ABF35] transition-all duration-300">
+                            <div class="relative overflow-hidden">
+                                <img
+                                    src="{{ $course->image_url ?? 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop' }}"
+                                    alt="{{ $course->title }}"
+                                    class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <span class="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-black border border-black">
+                                    {{ ($course->access ?? 'free') === 'premium' ? 'PREMIUM' : 'GRATIS' }}
+                                </span>
+                            </div>
+                            <div class="p-5 flex flex-col flex-1">
+                                <span class="text-xs font-bold uppercase tracking-widest text-[#0ABF35] mb-1">{{ $course->category ?? 'Umum' }}</span>
+                                <h3 class="font-bold text-gray-900 text-base leading-snug mb-2">{{ $course->title }}</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed line-clamp-3 flex-1">
+                                    {{ $course->description }}
+                                </p>
+                                <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+                                    <div class="flex items-center gap-1.5">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                                        <span class="font-medium">Online</span>
+                                    </div>
+                                    <span class="px-2.5 py-1 border border-gray-200 text-gray-500 rounded text-xs font-medium uppercase tracking-wide">
+                                        {{ ($course->access ?? 'free') === 'premium' ? 'Intermediate' : 'Beginner' }}
+                                    </span>
                                 </div>
-                                <span class="px-2.5 py-1 border border-gray-200 text-gray-500 rounded text-xs font-medium uppercase tracking-wide">Beginner</span>
                             </div>
+                            <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3.5 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
+                                MULAI BELAJAR →
+                            </a>
+                        </article>
+                    @empty
+                        <div class="col-span-full text-center py-20 bg-white border-2 border-dashed border-gray-300 rounded-lg">
+                            <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            <p class="text-gray-400 font-bold mb-1">Belum ada kursus yang tersedia.</p>
+                            <p class="text-sm text-gray-400">Admin sedang menyiapkan materi terbaik untukmu!</p>
                         </div>
-                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3.5 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
-                            MULAI BELAJAR →
-                        </a>
-                    </article>
-
-                    <!-- Card 2: PREMIUM -->
-                    <article class="bg-black border-2 border-black flex flex-col shadow-[6px_6px_0px_0px_#0ABF35]">
-                        <div class="relative overflow-hidden">
-                            <img
-                                src="https://placehold.co/600x340/0f172a/94a3b8?text=Junior+Analyst"
-                                alt="Junior Cybersecurity Analyst"
-                                class="w-full h-44 object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-500"
-                            />
-                            <span class="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-yellow-400 text-black border border-black">
-                                PREMIUM
-                            </span>
-                            <div class="absolute top-3 right-3 bg-black border border-[#0ABF35] px-2 py-1">
-                                <svg class="w-4 h-4 text-[#0ABF35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="p-5 flex flex-col flex-1">
-                            <span class="text-xs font-bold uppercase tracking-widest text-[#0ABF35] mb-1">Cybersecurity</span>
-                            <h3 class="font-bold text-white text-base leading-snug mb-2">Junior Cybersecurity Analyst</h3>
-                            <p class="text-sm text-gray-400 leading-relaxed line-clamp-3 flex-1">
-                                Program komprehensif untuk mempersiapkan karir sebagai Junior Cybersecurity Analyst dengan sertifikasi industri.
-                            </p>
-                            <div class="mt-4 pt-4 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
-                                <div class="flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                                    <span class="font-medium text-gray-400">80 Hours</span>
-                                </div>
-                                <span class="px-2.5 py-1 border border-gray-600 text-gray-400 text-xs font-medium uppercase tracking-wide">Intermediate</span>
-                            </div>
-                        </div>
-                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3.5 uppercase tracking-widest border-t-2 border-[#0ABF35] hover:bg-opacity-80 transition-colors duration-300">
-                            MULAI BELAJAR →
-                        </a>
-                    </article>
-
-                    <!-- Card 3: GRATIS -->
-                    <article class="bg-white border-2 border-gray-200 flex flex-col group hover:border-black hover:shadow-[6px_6px_0px_0px_#0ABF35] transition-all duration-300">
-                        <div class="relative overflow-hidden">
-                            <img
-                                src="https://placehold.co/600x340/0f172a/0ABF35?text=CyberOps"
-                                alt="CyberOps Associate"
-                                class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <span class="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-black border border-black">
-                                GRATIS
-                            </span>
-                        </div>
-                        <div class="p-5 flex flex-col flex-1">
-                            <span class="text-xs font-bold uppercase tracking-widest text-[#0ABF35] mb-1">Cybersecurity</span>
-                            <h3 class="font-bold text-gray-900 text-base leading-snug mb-2">CyberOps Associate</h3>
-                            <p class="text-sm text-gray-500 leading-relaxed line-clamp-3 flex-1">
-                                Kuasai operasi keamanan siber, analisis ancaman, dan teknik mitigasi untuk melindungi infrastruktur digital.
-                            </p>
-                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
-                                <div class="flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                                    <span class="font-medium">100 Hours</span>
-                                </div>
-                                <span class="px-2.5 py-1 border border-gray-200 text-gray-500 rounded text-xs font-medium uppercase tracking-wide">Beginner</span>
-                            </div>
-                        </div>
-                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3.5 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
-                            MULAI BELAJAR →
-                        </a>
-                    </article>
+                    @endforelse
 
                 </div>
 

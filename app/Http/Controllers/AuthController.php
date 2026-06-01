@@ -15,15 +15,21 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:student,recruiter',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         Auth::login($user);
+
+        if ($user->role === 'recruiter') {
+            return redirect('/talent-hub');
+        }
 
         return redirect('/dashboard');
     }
@@ -37,6 +43,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            // --- LOGIKA MULTI-ROLE ---
+            if (Auth::user()->role === 'admin') {
+                return redirect('/admin/dashboard');
+            }
+            if (Auth::user()->role === 'recruiter') {
+                return redirect('/talent-hub');
+            }
+
             return redirect('/dashboard');
         }
 

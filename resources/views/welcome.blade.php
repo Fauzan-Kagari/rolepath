@@ -23,8 +23,8 @@
         <div class="relative max-w-6xl mx-auto px-4 w-full pt-28 pb-20">
             <div class="max-w-3xl">
                 <!-- Badge -->
-                <div class="inline-flex items-center gap-2 bg-[#0ABF35] text-black text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-7 border border-black">
-                    <span class="w-2 h-2 bg-black rounded-full animate-pulse"></span>
+                <div class="inline-flex items-center gap-2 bg-[#0ABF35] text-white text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-7 border border-black">
+                    <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                     Platform Karir Digital #1
                 </div>
 
@@ -45,7 +45,7 @@
 
                 <!-- CTA Buttons -->
                 <div class="mt-10 flex flex-wrap gap-4">
-                    <a href="{{ route('courses') }}" class="inline-block px-8 py-4 bg-[#0ABF35] text-black font-bold text-sm uppercase tracking-widest border-2 border-[#0ABF35] hover:bg-black hover:text-[#0ABF35] transition-colors duration-200 shadow-[5px_5px_0px_0px_#ffffff22]">
+                    <a href="{{ route('courses') }}" class="inline-block px-8 py-4 bg-[#0ABF35] text-white font-bold text-sm uppercase tracking-widest border-2 border-[#0ABF35] hover:bg-black hover:text-[#0ABF35] transition-colors duration-200 shadow-[5px_5px_0px_0px_#ffffff22]">
                         MULAI BELAJAR GRATIS →
                     </a>
                     <a href="{{ route('courses') }}" class="inline-block px-8 py-4 bg-transparent text-white font-bold text-sm uppercase tracking-widest border-2 border-white hover:bg-white hover:text-black transition-colors duration-200">
@@ -79,8 +79,8 @@
     <div class="bg-[#0ABF35] border-y-2 border-black py-3 overflow-hidden">
         <div class="flex gap-8 animate-[marquee_20s_linear_infinite] whitespace-nowrap w-max">
             @foreach(['Cybersecurity', 'Data Science', 'Networking', 'AI & ML', 'Programming', 'Cloud Computing', 'DevOps', 'UI/UX Design', 'Cybersecurity', 'Data Science', 'Networking', 'AI & ML', 'Programming', 'Cloud Computing', 'DevOps', 'UI/UX Design'] as $tag)
-                <span class="text-xs font-bold uppercase tracking-widest text-black flex items-center gap-3">
-                    <span class="w-1.5 h-1.5 bg-black rounded-full inline-block"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-white flex items-center gap-3">
+                    <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
                     {{ $tag }}
                 </span>
             @endforeach
@@ -230,7 +230,7 @@
                         </div>
 
                         <!-- CTA -->
-                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-black font-bold text-xs text-center py-3 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
+                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
                             MULAI BELAJAR →
                         </a>
                     </article>
@@ -244,10 +244,10 @@
     ════════════════════════════════════════════ -->
     <section class="bg-[#0ABF35] py-16 md:py-20 px-4 border-y-2 border-black">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl md:text-5xl font-extrabold text-black leading-tight">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
                 Siap memulai karir<br>digital kamu?
             </h2>
-            <p class="mt-4 text-black/70 text-base max-w-xl mx-auto">
+            <p class="mt-4 text-white/90 text-base max-w-xl mx-auto">
                 Bergabunglah dengan 10.000+ pelajar yang sudah menemukan jalur karir mereka bersama Rolepath. Gratis untuk memulai.
             </p>
             <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">

@@ -22,33 +22,45 @@
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-white font-bold' : 'text-gray-300 hover:text-white transition' }}">About us</a>
             </nav>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
 
                 @guest
-                    <a href="{{ url('/login') }}" class="text-white hover:text-[#0ABF35] font-medium hidden md:block">Masuk</a>
-                    <a href="{{ url('/register') }}" class="bg-[#0ABF35] text-black px-5 py-2 rounded-sm font-bold hover:opacity-90">Daftar</a>
+                    <a href="{{ url('/login') }}" class="hidden md:inline-block text-sm text-gray-300 hover:text-white border border-gray-700 hover:border-white px-4 py-2 transition-colors">Masuk</a>
+                    <a href="{{ url('/register') }}" class="bg-[#0ABF35] text-black px-5 py-2 text-sm font-bold hover:bg-white transition-colors">Daftar</a>
                 @endguest
 
                 @auth
                     <div class="relative group">
-                        <div class="flex items-center gap-1 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors">
+                        <div class="flex items-center gap-1.5 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors border border-gray-700 hover:border-white px-3 py-1.5">
+                            <svg class="w-4 h-4 text-[#0ABF35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
                             <span>{{ Auth::user()->name }}</span>
                             <svg class="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path d="M6 9l6 6 6-6" />
                             </svg>
                         </div>
-                        <div class="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <a href="{{ url('/dashboard') }}" class="block px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-100 hover:text-black border-b border-gray-100">Dashboard</a>
-                            <a href="{{ url('/logout') }}" class="block px-4 py-2.5 text-sm text-red-600 hover:bg-red-50">Keluar</a>
+                        <div class="absolute right-0 top-full mt-1 w-48 bg-white border-2 border-black shadow-[4px_4px_0px_0px_#0ABF35] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <a href="{{ url('/dashboard') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-100 border-b border-gray-100">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                                Dashboard
+                            </a>
+                            <a href="{{ url('/logout') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                Keluar
+                            </a>
                         </div>
                     </div>
                 @endauth
 
-                <a href="#" class="bg-[#0ABF35] text-[#0A192F] font-bold text-sm px-4 py-2 rounded-lg hover:opacity-90 transition">
+                <a href="#" class="hidden md:inline-flex items-center gap-1.5 text-sm text-[#0ABF35] border-2 border-[#0ABF35] px-4 py-1.5 font-bold hover:bg-[#0ABF35] hover:text-black transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
                     Hubungi Kami
                 </a>
 
-                <button class="md:hidden w-9 h-9 flex items-center justify-center" aria-label="Menu">
+                <button class="md:hidden w-9 h-9 flex items-center justify-center border border-gray-700 hover:border-white transition-colors" aria-label="Menu">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M4 6h16M4 12h16M4 18h16" />
                     </svg>

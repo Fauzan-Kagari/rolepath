@@ -75,6 +75,25 @@
                     @enderror
                 </div>
 
+                <!-- PILIHAN ROLE -->
+                <div>
+                    <label for="role" class="block text-xs font-bold text-black uppercase tracking-widest mb-1.5">
+                        Daftar Sebagai
+                    </label>
+                    <select
+                        name="role"
+                        id="role"
+                        required
+                        class="block w-full border-2 border-gray-300 px-4 py-3 text-sm text-gray-900 focus:border-black focus:outline-none transition-colors duration-200"
+                    >
+                        <option value="student">Mahasiswa / Pencari Kerja</option>
+                        <option value="recruiter">HRD / Perusahaan</option>
+                    </select>
+                    @error('role')
+                        <p class="mt-1.5 text-xs text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Kata Sandi -->
                 <div>
                     <label for="password" class="block text-xs font-bold text-black uppercase tracking-widest mb-1.5">
