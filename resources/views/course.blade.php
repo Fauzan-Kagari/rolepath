@@ -149,7 +149,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3.5 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
+                            <a href="{{ route('courses.show', $course) }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3.5 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
                                 MULAI BELAJAR →
                             </a>
                         </article>

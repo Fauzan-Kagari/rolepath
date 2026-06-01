@@ -34,13 +34,16 @@ Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticate
 
 Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 
-Route::get('/courses/junior-cybersecurity-analyst', function () {
-    return view('course-detail');
-})->name('courses.detail');
+Route::get('/courses/{course}', function (Course $course) {
+    $lessons = $course->lessons()->orderBy('order_number')->get()->groupBy('section_title');
+    return view('course-detail', compact('course', 'lessons'));
+})->name('courses.show');
 
-Route::get('/courses/junior-cybersecurity-analyst/apa-itu-cybersecurity', function () {
-    return view('lesson');
-})->name('lesson');
+Route::get('/courses/{course}/lessons/{lesson}', function (Course $course, $lessonId) {
+    $lesson = $course->lessons()->findOrFail($lessonId);
+    $groupedLessons = $course->lessons()->orderBy('order_number')->get()->groupBy('section_title');
+    return view('lesson', compact('course', 'lesson', 'groupedLessons'));
+})->name('courses.lesson');
 
 Route::get('/dashboard', function () {
     $totalCourses = Course::count();
