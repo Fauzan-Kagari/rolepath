@@ -4,24 +4,21 @@
 
 @section('content')
 
-    <!-- ═══════════════════════════════════════════
-         COURSE HEADER
-    ════════════════════════════════════════════ -->
-    <section class="bg-black pt-28 pb-12 px-4 border-b-2 border-[#0ABF35] relative overflow-hidden">
+    <!-- COURSE HEADER -->
+    <section class="bg-gray-900 pt-28 pb-12 px-4 border-b-2 border-[#0ABF35] relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-1 bg-[#0ABF35]"></div>
         <div class="absolute right-0 top-0 h-full w-64 bg-[#0ABF35] opacity-[0.03]"></div>
 
         <div class="max-w-5xl mx-auto">
-            <!-- Breadcrumb -->
-            <div class="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-widest mb-6 font-medium">
-                <a href="{{ route('courses') }}" class="hover:text-[#0ABF35] transition-colors">Kursus</a>
-                <span>›</span>
-                <span class="text-[#0ABF35]">{{ $course->title }}</span>
-            </div>
+            <!-- Back to courses -->
+            <a href="{{ route('courses') }}" class="inline-flex items-center gap-2 text-xs text-gray-500 uppercase tracking-widest hover:text-[#0ABF35] transition-colors mb-4 font-medium">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+                Kembali ke Daftar Kursus
+            </a>
 
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
                 <div class="flex-1">
-                    <div class="inline-block bg-[#0ABF35] text-black text-xs font-bold px-3 py-1 uppercase tracking-widest rounded-full mb-4">
+                    <div class="inline-block bg-[#0ABF35] text-gray-800 text-xs font-bold px-3 py-1 uppercase tracking-widest rounded-full mb-4">
                         {{ strtoupper($course->category ?? 'UMUM') }}
                     </div>
                     <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
@@ -34,46 +31,43 @@
                     <!-- Meta -->
                     <div class="mt-6 flex flex-wrap items-center gap-5 text-xs text-gray-400">
                         <div class="flex items-center gap-1.5">
-                            <svg class="w-4 h-4 text-[#0ABF35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                            <span class="font-medium">80 Jam Belajar</span>
-                        </div>
-                        <div class="flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-[#0ABF35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5v14a2 2 0 002 2h12a2 2 0 002-2V5"/><path d="M8 3v4M16 3v4M8 9h8M8 13h6"/></svg>
-                            <span class="font-medium">{{ $course->lessons->count() }} Pelajaran</span>
+                            <span class="font-medium">{{ $totalLessons }} Pelajaran</span>
                         </div>
                         <div class="flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-[#0ABF35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
                             <span class="font-medium">Sertifikat Tersedia</span>
                         </div>
-                        <span class="px-3 py-1 border {{ ($course->access ?? 'free') === 'premium' ? 'border-yellow-500 text-yellow-400' : 'border-[#0ABF35] text-[#0ABF35]' }} font-bold uppercase">{{ strtoupper($course->access ?? 'GRATIS') }}</span>
+                        <span class="px-3 py-1 border {{ $course->access === 'premium' ? 'border-yellow-500 text-yellow-400' : 'border-[#0ABF35] text-[#0ABF35]' }} font-bold uppercase">{{ strtoupper($course->access ?? 'GRATIS') }}</span>
                     </div>
                 </div>
 
                 <!-- CTA -->
+                @php $firstLesson = $course->lessons()->orderBy('order_number')->first(); @endphp
                 <div class="shrink-0 flex flex-col items-start md:items-end gap-3">
-                    <a href="{{ $course->lessons->count() ? route('courses.show', $course) . '#kurikulum' : '#' }}" class="inline-block bg-[#0ABF35] text-black font-bold text-sm px-8 py-4 border-2 border-[#0ABF35] hover:bg-black hover:text-[#0ABF35] transition-colors duration-200 tracking-widest uppercase shadow-[5px_5px_0px_0px_rgba(255,255,255,0.1)]">
+                    <a href="{{ $firstLesson ? route('courses.lesson', [$course, $firstLesson]) : '#' }}" class="inline-block bg-[#0ABF35] text-gray-800 font-bold text-sm px-8 py-4 border-2 border-[#0ABF35] hover:bg-gray-800 hover:border-gray-800 hover:text-white transition-colors duration-200 tracking-widest uppercase">
                         MULAI KURSUS →
                     </a>
-                    <p class="text-xs text-gray-500">{{ $course->lessons->count() }} pelajaran tersedia</p>
+                    <p class="text-xs text-gray-500">{{ $totalLessons }} pelajaran tersedia</p>
                 </div>
             </div>
 
             <!-- Global Progress Bar -->
+            @if(auth()->check())
             <div class="mt-8">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Progress Keseluruhan</span>
-                    <span class="text-xs font-bold text-white">7% <span class="text-gray-500 font-normal">(1 dari 15 Pelajaran)</span></span>
+                    <span class="text-xs font-bold text-white">{{ $progress }}% <span class="text-gray-500 font-normal">({{ $completedCount }} dari {{ $totalLessons }} Pelajaran)</span></span>
                 </div>
-                <div class="w-full h-2.5 bg-gray-800 border border-gray-700">
-                    <div class="h-full bg-[#0ABF35] transition-all duration-700" style="width: 7%"></div>
+                <div class="w-full h-2.5 bg-gray-700">
+                    <div class="h-full bg-[#0ABF35] transition-all duration-700" style="width: {{ $progress }}%"></div>
                 </div>
             </div>
+            @endif
         </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════
-         CURRICULUM BODY
-    ════════════════════════════════════════════ -->
+    <!-- CURRICULUM BODY -->
     <section id="kurikulum" class="bg-gray-50 min-h-screen px-4 py-12">
         <div class="max-w-5xl mx-auto">
 
@@ -92,11 +86,14 @@
 
                         <div class="divide-y divide-gray-100">
                             @foreach($sectionLessons as $lesson)
+                                @php $isCompleted = in_array($lesson->id, $completedIds ?? []); @endphp
                                 <a href="{{ route('courses.lesson', [$course, $lesson]) }}" class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-4">
-                                        <div class="w-8 h-8 bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0">
-                                            {{ $lesson->order_number ?? $loop->iteration }}
-                                        </div>
+                                        @if($isCompleted)
+                                            <svg class="w-5 h-5 text-[#0ABF35] shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                        @else
+                                            <div class="w-5 h-5 border-2 border-gray-300 flex items-center justify-center shrink-0"></div>
+                                        @endif
                                         <p class="text-gray-900 font-medium text-sm">{{ $lesson->title }}</p>
                                     </div>
                                     <svg class="w-4 h-4 text-gray-300 group-hover:text-[#0ABF35] transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>

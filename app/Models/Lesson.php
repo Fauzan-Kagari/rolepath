@@ -11,9 +11,15 @@ class Lesson extends Model
 
     protected $fillable = ['course_id', 'section_title', 'title', 'content', 'codepen_url', 'order_number'];
 
-    // Relasi: 1 Lesson adalah milik 1 Course
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function completedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'lesson_user')
+            ->withPivot('completed_at')
+            ->withTimestamps();
     }
 }

@@ -64,10 +64,14 @@ class AdminController extends Controller
             'codepen_url' => 'nullable|url',
         ]);
 
+        $lessonTitle = $request->title === '-'
+            ? 'Materi ' . (Lesson::where('course_id', $id)->where('section_title', $request->section_title)->count() + 1)
+            : $request->title;
+
         Lesson::create([
             'course_id' => $id,
             'section_title' => $request->section_title,
-            'title' => $request->title,
+            'title' => $lessonTitle,
             'content' => $request->content,
             'codepen_url' => $request->codepen_url,
             'order_number' => Lesson::where('course_id', $id)->count() + 1,
@@ -104,6 +108,34 @@ class AdminController extends Controller
         ]);
 
         return redirect('/admin/courses/' . $lesson->course_id . '/lessons')->with('success', 'Materi berhasil diperbarui!');
+    }
+
+    public function updateCourse(Request $request, $id)
+    {
+        if (Auth::user()->role !== 'admin') abort(403);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image_url' => 'nullable|url',
+            'category' => 'nullable|string|max:255',
+            'access' => 'nullable|string|max:255',
+        ]);
+
+        $course = Course::findOrFail($id);
+        $course->update($request->only(['title', 'description', 'image_url', 'category', 'access']));
+
+        return back()->with('success', 'Kursus berhasil diperbarui!');
+    }
+
+    public function destroyCourse($id)
+    {
+        if (Auth::user()->role !== 'admin') abort(403);
+
+        $course = Course::findOrFail($id);
+        $course->delete();
+
+        return back()->with('success', 'Kursus berhasil dihapus!');
     }
 
     public function deleteLesson($id)

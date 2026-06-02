@@ -39,8 +39,69 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-                <!-- Form Tambah Materi -->
-                <div class="lg:col-span-1">
+                <!-- Left Sidebar -->
+                <div class="lg:col-span-1 space-y-6">
+
+                    <!-- Edit Kursus -->
+                    <div class="bg-white border border-gray-200 shadow-lg shadow-gray-200/50">
+                        <div class="bg-gradient-to-r from-gray-800 to-gray-700 px-6 py-4 flex items-center gap-3">
+                            <div class="w-7 h-7 bg-white/20 flex items-center justify-center rounded">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            </div>
+                            <h2 class="text-sm font-black text-white uppercase tracking-widest">Edit Kursus</h2>
+                        </div>
+
+                        <form action="/admin/courses/{{ $course->id }}" method="POST" class="p-6 space-y-4">
+                            @csrf
+                            @method('PUT')
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">Judul Kursus</label>
+                                <input type="text" name="title" value="{{ $course->title }}" required class="w-full border border-gray-300 bg-gray-50 text-gray-900 px-4 py-3 text-sm placeholder-gray-400 focus:border-[#0ABF35] focus:ring-1 focus:ring-[#0ABF35] focus:outline-none transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">Deskripsi</label>
+                                <textarea name="description" rows="3" required class="w-full border border-gray-300 bg-gray-50 text-gray-900 px-4 py-3 text-sm placeholder-gray-400 focus:border-[#0ABF35] focus:ring-1 focus:ring-[#0ABF35] focus:outline-none transition-colors resize-none">{{ $course->description }}</textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">URL Gambar</label>
+                                <input type="url" name="image_url" value="{{ $course->image_url }}" placeholder="https://..." class="w-full border border-gray-300 bg-gray-50 text-gray-900 px-4 py-3 text-sm placeholder-gray-400 focus:border-[#0ABF35] focus:ring-1 focus:ring-[#0ABF35] focus:outline-none transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">Kategori</label>
+                                <select name="category" class="w-full border border-gray-300 bg-gray-50 text-gray-900 px-4 py-3 text-sm focus:border-[#0ABF35] focus:ring-1 focus:ring-[#0ABF35] focus:outline-none transition-colors">
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="cybersecurity" {{ $course->category === 'cybersecurity' ? 'selected' : '' }}>Cybersecurity</option>
+                                    <option value="networking" {{ $course->category === 'networking' ? 'selected' : '' }}>Networking</option>
+                                    <option value="programming" {{ $course->category === 'programming' ? 'selected' : '' }}>Programming</option>
+                                    <option value="ai" {{ $course->category === 'ai' ? 'selected' : '' }}>AI & Data Science</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">Tipe Akses</label>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input type="radio" name="access" value="free" class="accent-[#0ABF35]" {{ ($course->access ?? 'free') === 'free' ? 'checked' : '' }}>
+                                        <span class="text-xs font-bold text-[#0ABF35] border border-[#0ABF35] bg-[#0ABF35]/5 px-3 py-1 uppercase tracking-wide transition-colors cursor-pointer">GRATIS</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input type="radio" name="access" value="premium" class="accent-yellow-500" {{ ($course->access ?? 'free') === 'premium' ? 'checked' : '' }}>
+                                        <span class="text-xs font-bold text-yellow-600 border border-yellow-500 bg-yellow-50 px-3 py-1 uppercase tracking-wide transition-colors cursor-pointer">PREMIUM</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gray-800 text-white font-bold py-3 text-xs uppercase tracking-widest hover:bg-gray-700 transition-colors duration-200 shadow-sm">
+                                SIMPAN PERUBAHAN KURSUS
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Form Tambah Materi -->
                     <div class="bg-white border border-gray-200 shadow-lg shadow-gray-200/50">
                         <div class="bg-gradient-to-r from-[#0ABF35] to-emerald-500 px-6 py-4 flex items-center gap-3">
                             <div class="w-7 h-7 bg-white/20 flex items-center justify-center rounded">
@@ -67,6 +128,32 @@
                             </button>
                         </form>
                     </div>
+
+                    <!-- Form Tambah Widget Baru -->
+                    <div class="bg-white border border-gray-200 shadow-lg shadow-gray-200/50">
+                        <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 px-6 py-4 flex items-center gap-3">
+                            <div class="w-7 h-7 bg-white/20 flex items-center justify-center rounded">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                            </div>
+                            <h2 class="text-sm font-black text-white uppercase tracking-widest">Tambah Widget Baru</h2>
+                        </div>
+
+                        <form action="/admin/courses/{{ $course->id }}/lessons" method="POST" class="p-6 space-y-5">
+                            @csrf
+                            <input type="hidden" name="title" value="-">
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">Nama Widget / Bab</label>
+                                <input type="text" name="section_title" placeholder="Contoh: Pengenalan CSS Dasar" required class="w-full border border-gray-300 bg-gray-50 text-gray-900 px-4 py-3 text-sm placeholder-gray-400 focus:border-[#0ABF35] focus:ring-1 focus:ring-[#0ABF35] focus:outline-none transition-colors">
+                                <p class="text-[10px] text-gray-400 mt-1">Widget baru akan muncul sebagai bab di struktur kursus. Judul materi akan diisi otomatis.</p>
+                            </div>
+
+                            <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3.5 text-xs uppercase tracking-widest hover:bg-emerald-700 transition-colors duration-200 shadow-sm">
+                                + TAMBAH WIDGET BARU
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
 
                 <!-- Struktur Kursus -->

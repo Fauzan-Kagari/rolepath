@@ -36,14 +36,30 @@ Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 
 Route::get('/courses/{course}', function (Course $course) {
     $lessons = $course->lessons()->orderBy('order_number')->get()->groupBy('section_title');
-    return view('course-detail', compact('course', 'lessons'));
+    $completedIds = auth()->check()
+        ? auth()->user()->completedLessons()->pluck('lesson_id')->toArray()
+        : [];
+    $progress = auth()->check() ? $course->progressPercentage(auth()->id()) : 0;
+    $completedCount = auth()->check() ? $course->completedLessonsCount(auth()->id()) : 0;
+    $totalLessons = $course->lessons()->count();
+    return view('course-detail', compact('course', 'lessons', 'completedIds', 'progress', 'completedCount', 'totalLessons'));
 })->name('courses.show');
 
 Route::get('/courses/{course}/lessons/{lesson}', function (Course $course, $lessonId) {
     $lesson = $course->lessons()->findOrFail($lessonId);
     $groupedLessons = $course->lessons()->orderBy('order_number')->get()->groupBy('section_title');
-    return view('lesson', compact('course', 'lesson', 'groupedLessons'));
+    $completedIds = auth()->check()
+        ? auth()->user()->completedLessons()->pluck('lesson_id')->toArray()
+        : [];
+    $progress = auth()->check() ? $course->progressPercentage(auth()->id()) : 0;
+    return view('lesson', compact('course', 'lesson', 'groupedLessons', 'completedIds', 'progress'));
 })->name('courses.lesson');
+
+Route::post('/courses/{course}/lessons/{lesson}/complete', function (Course $course, $lessonId) {
+    $lesson = $course->lessons()->findOrFail($lessonId);
+    auth()->user()->completedLessons()->syncWithoutDetaching([$lesson->id => ['completed_at' => now()]]);
+    return back();
+})->middleware('auth')->name('courses.lesson.complete');
 
 Route::get('/dashboard', function () {
     $totalCourses = Course::count();
@@ -61,6 +77,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/courses/{course}/lessons', [App\Http\Controllers\AdminController::class, 'manageLessons']);
     Route::post('/admin/courses/{course}/lessons', [App\Http\Controllers\AdminController::class, 'storeLesson']);
+    Route::put('/admin/courses/{course}', [App\Http\Controllers\AdminController::class, 'updateCourse']);
+    Route::delete('/admin/courses/{course}', [App\Http\Controllers\AdminController::class, 'destroyCourse']);
 
     // --- Rute Edit dan Hapus Materi ---
     Route::get('/admin/lessons/{id}/edit', [App\Http\Controllers\AdminController::class, 'editLesson']);
