@@ -125,8 +125,9 @@
                                     alt="{{ $course->title }}"
                                     class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
-                                <span class="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-gray-800 border border-[#0ABF35]">
-                                    {{ ($course->access ?? 'free') === 'premium' ? 'PREMIUM' : 'GRATIS' }}
+                                @php $isPremium = ($course->access ?? 'free') === 'premium'; @endphp
+                                <span class="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase tracking-wider {{ $isPremium ? 'bg-yellow-50 text-yellow-600 border-yellow-500' : 'bg-[#0ABF35] text-gray-800 border-[#0ABF35]' }} border">
+                                    {{ $isPremium ? 'PREMIUM' : 'GRATIS' }}
                                 </span>
                             </div>
                             <div class="p-5 flex flex-col flex-1">
