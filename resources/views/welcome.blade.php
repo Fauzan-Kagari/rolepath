@@ -76,7 +76,7 @@
     <!-- ═══════════════════════════════════════════
          MARQUEE STRIP
     ════════════════════════════════════════════ -->
-    <div class="bg-[#0ABF35] border-y-2 border-black py-3 overflow-hidden">
+    <div class="bg-[#0ABF35] py-3 overflow-hidden">
         <div class="flex gap-8 animate-[marquee_20s_linear_infinite] whitespace-nowrap w-max">
             @foreach(['Cybersecurity', 'Data Science', 'Networking', 'AI & ML', 'Programming', 'Cloud Computing', 'DevOps', 'UI/UX Design', 'Cybersecurity', 'Data Science', 'Networking', 'AI & ML', 'Programming', 'Cloud Computing', 'DevOps', 'UI/UX Design'] as $tag)
                 <span class="text-xs font-bold uppercase tracking-widest text-white flex items-center gap-3">
@@ -95,7 +95,7 @@
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
                 <div>
-                    <div class="inline-block bg-black text-[#0ABF35] text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-4">
+                    <div class="inline-block bg-[#0ABF35] text-gray-800 text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-4">
                         KENAPA ROLEPATH?
                     </div>
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
@@ -119,7 +119,7 @@
                 @endphp
 
                 @foreach($features as $f)
-                    <article class="{{ $f['dark'] ? 'bg-black text-white border-black shadow-[6px_6px_0px_0px_#0ABF35]' : 'bg-white text-gray-900 border-gray-200 hover:border-black hover:shadow-[6px_6px_0px_0px_#0ABF35]' }} border-2 p-7 flex flex-col gap-4 transition-all duration-300 group">
+                    <article class="{{ $f['dark'] ? 'bg-gray-800 text-white border-gray-800 shadow-[6px_6px_0px_0px_#0ABF35]' : 'bg-white text-gray-900 border-gray-200 hover:border-gray-400 hover:shadow-[6px_6px_0px_0px_#0ABF35]' }} border-2 p-7 flex flex-col gap-4 transition-all duration-300 group">
                         <span class="text-4xl font-black {{ $f['dark'] ? 'text-[#0ABF35]' : 'text-gray-200 group-hover:text-[#0ABF35]' }} transition-colors duration-300 leading-none">{{ $f['num'] }}</span>
                         <h3 class="font-bold text-lg {{ $f['dark'] ? 'text-white' : 'text-gray-900' }} leading-snug">{{ $f['title'] }}</h3>
                         <p class="text-sm {{ $f['dark'] ? 'text-gray-400' : 'text-gray-500' }} leading-relaxed flex-1">{{ $f['desc'] }}</p>
@@ -133,17 +133,14 @@
     <!-- ═══════════════════════════════════════════
          PROCESS TIMELINE
     ════════════════════════════════════════════ -->
-    <section class="bg-black py-16 md:py-24 px-4 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-1 bg-[#0ABF35]"></div>
-        <div class="absolute bottom-0 left-0 w-full h-1 bg-[#0ABF35]"></div>
-
+    <section class="bg-gray-50 py-16 md:py-24 px-4 relative overflow-hidden border-t border-gray-100">
         <div class="max-w-5xl mx-auto">
             <!-- Header -->
             <div class="text-center mb-16">
-                <div class="inline-block bg-[#0ABF35] text-black text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-5">
+                <div class="inline-block bg-[#0ABF35] text-gray-800 text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-5">
                     CARA KERJA
                 </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-white">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
                     Proses dalam tiga langkah mudah
                 </h2>
             </div>
@@ -151,7 +148,7 @@
             <!-- Steps -->
             <div class="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
                 <!-- Connector line -->
-                <div class="hidden md:block absolute top-10 left-[calc(16.67%+1rem)] right-[calc(16.67%+1rem)] h-px bg-[#0ABF35] opacity-30 z-0"></div>
+                <div class="hidden md:block absolute top-10 left-[calc(16.67%+1rem)] right-[calc(16.67%+1rem)] h-px bg-[#0ABF35] opacity-20 z-0"></div>
 
                 @php
                     $steps = [
@@ -164,11 +161,11 @@
                 @foreach($steps as $step)
                     <div class="relative flex flex-col items-center text-center z-10">
                         <!-- Step number -->
-                        <div class="w-20 h-20 bg-[#0ABF35] border-2 border-[#0ABF35] flex items-center justify-center text-black text-3xl font-black shadow-[5px_5px_0px_0px_#ffffff22] mb-6">
+                        <div class="w-20 h-20 bg-[#0ABF35] border-2 border-[#0ABF35] flex items-center justify-center text-gray-800 text-3xl font-black shadow-[5px_5px_0px_0px_rgba(0,0,0,0.08)] mb-6">
                             {{ $step['n'] }}
                         </div>
-                        <h3 class="text-lg font-bold text-white uppercase tracking-wide mb-3">{{ $step['title'] }}</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed max-w-[260px]">{{ $step['desc'] }}</p>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wide mb-3">{{ $step['title'] }}</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed max-w-[260px]">{{ $step['desc'] }}</p>
                     </div>
                 @endforeach
             </div>
@@ -183,14 +180,14 @@
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
                 <div>
-                    <div class="inline-block bg-[#0ABF35] text-black text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-4">
+                    <div class="inline-block bg-[#0ABF35] text-gray-800 text-xs font-bold px-4 py-1.5 uppercase tracking-widest rounded-full mb-4">
                         MULAI GRATIS
                     </div>
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
                         Kursus <span class="text-[#0ABF35]">Gratis</span> Populer
                     </h2>
                 </div>
-                <a href="{{ route('courses') }}" class="self-start md:self-auto inline-block px-6 py-3 bg-white text-black font-bold text-xs uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white transition-colors duration-200">
+                <a href="{{ route('courses') }}" class="self-start md:self-auto inline-block px-6 py-3 bg-white text-gray-800 font-bold text-xs uppercase tracking-widest border-2 border-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
                     LIHAT SEMUA →
                 </a>
             </div>
@@ -207,11 +204,11 @@
                 @endphp
 
                 @foreach($courses as $course)
-                    <article class="bg-white border-2 border-gray-200 flex flex-col group hover:border-black hover:shadow-[6px_6px_0px_0px_#0ABF35] transition-all duration-300">
+                    <article class="bg-white border-2 border-gray-200 flex flex-col group hover:border-gray-400 hover:shadow-[6px_6px_0px_0px_#0ABF35] transition-all duration-300">
                         <!-- Thumbnail -->
-                        <div class="relative overflow-hidden bg-black">
+                        <div class="relative overflow-hidden bg-gray-200">
                             <img src="https://placehold.co/400x240/0f172a/0ABF35?text={{ urlencode($course['title']) }}" alt="{{ $course['title'] }}" class="w-full h-40 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-black border border-black">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-gray-800 border border-[#0ABF35]">
                                 GRATIS
                             </span>
                         </div>
@@ -230,7 +227,7 @@
                         </div>
 
                         <!-- CTA -->
-                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-white font-bold text-xs text-center py-3 uppercase tracking-widest border-t-2 border-black group-hover:bg-black group-hover:text-[#0ABF35] transition-colors duration-300">
+                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-gray-800 font-bold text-xs text-center py-3 uppercase tracking-widest border-t-2 border-[#0ABF35] group-hover:bg-gray-800 group-hover:text-white transition-colors duration-300">
                             MULAI BELAJAR →
                         </a>
                     </article>
@@ -242,7 +239,7 @@
     <!-- ═══════════════════════════════════════════
          CTA BANNER
     ════════════════════════════════════════════ -->
-    <section class="bg-[#0ABF35] py-16 md:py-20 px-4 border-y-2 border-black">
+    <section class="bg-[#0ABF35] py-16 md:py-20 px-4">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
                 Siap memulai karir<br>digital kamu?
@@ -251,10 +248,10 @@
                 Bergabunglah dengan 10.000+ pelajar yang sudah menemukan jalur karir mereka bersama Rolepath. Gratis untuk memulai.
             </p>
             <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('register') }}" class="inline-block px-8 py-4 bg-black text-[#0ABF35] font-bold text-sm uppercase tracking-widest border-2 border-black hover:bg-white hover:text-black transition-colors duration-200 shadow-[5px_5px_0px_0px_rgba(0,0,0,0.2)]">
+                <a href="{{ route('register') }}" class="inline-block px-8 py-4 bg-gray-800 text-white font-bold text-sm uppercase tracking-widest border-2 border-gray-800 hover:bg-white hover:text-gray-800 transition-colors duration-200 shadow-[5px_5px_0px_0px_rgba(0,0,0,0.15)]">
                     DAFTAR GRATIS SEKARANG →
                 </a>
-                <a href="{{ route('courses') }}" class="inline-block px-8 py-4 bg-transparent text-black font-bold text-sm uppercase tracking-widest border-2 border-black hover:bg-black hover:text-[#0ABF35] transition-colors duration-200">
+                <a href="{{ route('courses') }}" class="inline-block px-8 py-4 bg-transparent text-white font-bold text-sm uppercase tracking-widest border-2 border-white hover:bg-white hover:text-gray-800 transition-colors duration-200">
                     LIHAT KURSUS
                 </a>
             </div>

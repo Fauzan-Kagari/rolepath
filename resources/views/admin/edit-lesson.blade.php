@@ -2,6 +2,7 @@
 @section('title', 'Edit Materi - Rolepath')
 
 @section('content')
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <div class="min-h-screen bg-gray-50">
 
     <!-- Top Header Bar -->
@@ -123,6 +124,7 @@
     </section>
 </div>
 
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script>
     let rawContent = {!! json_encode($lesson->content ?? '') !!};
     let blocksData = [];
@@ -150,9 +152,12 @@
 
         if(type === 'text') {
             topBar = `<div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100 bg-gray-50">
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-700">Blok Teks / HTML</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-700">Teks dengan Editor</span>
+                <span class="text-xs text-gray-400 ml-auto">Bold, Heading, List tersedia</span>
             </div>`;
-            inputField = `<div class="p-4"><textarea class="block-value w-full border border-gray-200 bg-white text-gray-900 px-4 py-3 font-mono text-sm focus:border-[#0ABF35] focus:outline-none transition-colors resize-y" rows="5" placeholder="Ketik materi penjelasan atau tag HTML di sini...">${value}</textarea></div>`;
+            inputField = `<div class="p-4">
+                <div class="block-value quill-editor" style="min-height: 180px;">${value}</div>
+            </div>`;
         }
         else if(type === 'image') {
             topBar = `<div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100 bg-gray-50">
@@ -170,16 +175,39 @@
             topBar = `<div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100 bg-gray-50">
                 <span class="text-xs font-bold uppercase tracking-widest text-gray-700">Blok CodePen</span>
             </div>`;
-            inputField = `<div class="p-4"><input type="url" class="block-value w-full border border-gray-200 bg-white text-gray-900 px-4 py-3 text-sm focus:border-[#0ABF35] focus:outline-none transition-colors" placeholder="Masukkan Link CodePen (contoh: https://codepen.io/...)" value="${value}"></div>`;
+            inputField = `<div class="p-4"><input type="url" class="block-value w-full border border-gray-200 bg-white text-gray-900 px-4 py-3 text-sm focus:border-[#0ABF35] focus:outline-none transition-colors" placeholder="Masukkan link browser CodePen (contoh: https://codepen.io/username/pen/xyz) — otomatis dikonversi ke /embed/" value="${value}"></div>`;
         }
 
         blockUi.innerHTML = deleteBtn + topBar + inputField;
         return blockUi;
     }
 
+    function initQuillEditor(el) {
+        if (el._quill) return;
+        let quill = new Quill(el, {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [false, 1, 2, 3] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+        el._quill = quill;
+    }
+
     function addBlock(type) {
         let newBlock = createBlockHTML(type, '');
         container.appendChild(newBlock);
+        if (type === 'text') {
+            let qEl = newBlock.querySelector('.quill-editor');
+            if (qEl) initQuillEditor(qEl);
+        }
     }
 
     blocksData.forEach(block => {
@@ -187,15 +215,30 @@
         container.appendChild(existingBlock);
     });
 
+    document.querySelectorAll('.quill-editor').forEach(el => initQuillEditor(el));
+
     document.getElementById('lessonForm').addEventListener('submit', function(e) {
         let finalData = [];
         let blockElements = document.querySelectorAll('.block-item');
 
         blockElements.forEach(item => {
             let type = item.getAttribute('data-type');
-            let val = item.querySelector('.block-value').value;
+            let val;
 
-            if(val.trim() !== "") {
+            if (type === 'text') {
+                let editor = item.querySelector('.quill-editor');
+                if (editor && editor._quill) {
+                    val = editor._quill.root.innerHTML;
+                    if (val === '<p><br></p>') val = '';
+                } else {
+                    val = editor ? editor.innerHTML : '';
+                }
+            } else {
+                let input = item.querySelector('.block-value');
+                val = input ? input.value : '';
+            }
+
+            if (val.trim() !== "") {
                 finalData.push({ type: type, value: val });
             }
         });

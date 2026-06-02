@@ -42,8 +42,9 @@
                 @endphp
                 <div class="section-group">
                     <button class="section-toggle flex items-center justify-between w-full px-5 py-3 text-left transition-colors hover:bg-gray-800 {{ $hasActive ? 'bg-gray-800' : '' }}">
-                        <span class="text-[10px] font-bold {{ $hasActive ? 'text-[#0ABF35]' : 'text-gray-500' }} uppercase tracking-wider">
-                            {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }} · {{ $sectionTitle }}
+                        <span class="text-[10px] font-bold {{ $hasActive ? 'text-[#0ABF35]' : 'text-gray-500' }} uppercase tracking-wider flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            {{ $sectionTitle }}
                         </span>
                         <svg class="chevron w-3.5 h-3.5 text-gray-500 transition-transform duration-200 {{ $hasActive ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
                     </button>
@@ -121,8 +122,9 @@
             </h1>
 
             @if($lesson->codepen_url)
-                <div class="mb-8 not-prose">
-                    <iframe height="400" style="width: 100%;" scrolling="no" src="{{ $lesson->codepen_url }}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
+                @php $cpEmbed = str_replace('/pen/', '/embed/', $lesson->codepen_url); @endphp
+                <div class="mb-8 not-prose border border-gray-200 bg-gray-100">
+                    <iframe class="w-full" height="400" src="{{ $cpEmbed }}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
                 </div>
             @endif
 
@@ -131,16 +133,29 @@
                 @php $blocks = json_decode($lesson->content, true) ?? []; @endphp
                 @foreach($blocks as $block)
                     @if($block['type'] === 'text')
-                        <p>{!! nl2br($block['value']) !!}</p>
+                        @php $isHtml = $block['value'] !== strip_tags($block['value']); @endphp
+                        @if($isHtml)
+                            <div class="leading-relaxed">{!! $block['value'] !!}</div>
+                        @else
+                            <p>{!! nl2br(e($block['value'])) !!}</p>
+                        @endif
                     @elseif($block['type'] === 'image')
                         <img src="{{ $block['value'] }}" alt="" class="not-prose w-full border border-gray-200">
                     @elseif($block['type'] === 'youtube')
-                        <div class="not-prose aspect-video border border-gray-200">
-                            <iframe class="w-full h-full" src="{{ $block['value'] }}" frameborder="0" allowfullscreen></iframe>
+                        @php
+                            $ytId = '';
+                            if (preg_match('/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/', $block['value'], $m)) {
+                                $ytId = $m[1];
+                            }
+                            $ytEmbed = $ytId ? "https://www.youtube.com/embed/$ytId" : $block['value'];
+                        @endphp
+                        <div class="not-prose aspect-video border border-gray-200 bg-gray-100">
+                            <iframe class="w-full h-full" src="{{ $ytEmbed }}" frameborder="0" allowfullscreen loading="lazy"></iframe>
                         </div>
                     @elseif($block['type'] === 'codepen')
-                        <div class="not-prose">
-                            <iframe height="400" style="width: 100%;" scrolling="no" src="{{ $block['value'] }}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
+                        @php $cpEmbed = str_replace('/pen/', '/embed/', $block['value']); @endphp
+                        <div class="not-prose border border-gray-200 bg-gray-100">
+                            <iframe class="w-full" height="400" src="{{ $cpEmbed }}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
                         </div>
                     @endif
                 @endforeach
