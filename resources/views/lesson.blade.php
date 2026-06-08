@@ -122,7 +122,10 @@
             </h1>
 
             @if($lesson->codepen_url)
-                @php $cpEmbed = str_replace('/pen/', '/embed/', $lesson->codepen_url); @endphp
+                @php
+                    $cpEmbed = str_replace('/pen/', '/embed/', $lesson->codepen_url);
+                    $cpEmbed .= (parse_url($cpEmbed, PHP_URL_QUERY) ? '&' : '?') . 'editable=true';
+                @endphp
                 <div class="mb-8 not-prose border border-gray-200 bg-gray-100">
                     <iframe class="w-full" height="400" src="{{ $cpEmbed }}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
                 </div>
@@ -153,7 +156,10 @@
                             <iframe class="w-full h-full" src="{{ $ytEmbed }}" frameborder="0" allowfullscreen loading="lazy"></iframe>
                         </div>
                     @elseif($block['type'] === 'codepen')
-                        @php $cpEmbed = str_replace('/pen/', '/embed/', $block['value']); @endphp
+                        @php
+                            $cpEmbed = str_replace('/pen/', '/embed/', $block['value']);
+                            $cpEmbed .= (parse_url($cpEmbed, PHP_URL_QUERY) ? '&' : '?') . 'editable=true';
+                        @endphp
                         <div class="not-prose border border-gray-200 bg-gray-100">
                             <iframe class="w-full" height="400" src="{{ $cpEmbed }}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
                         </div>
