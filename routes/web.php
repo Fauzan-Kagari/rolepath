@@ -32,6 +32,9 @@ Route::post('/register', [App\Http\Controllers\AuthController::class, 'storeRegi
 
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticate']);
 
+Route::get('/auth/google', [App\Http\Controllers\GoogleAuthController::class, 'redirect'])->name('google.login');
+Route::get('/auth/google/callback', [App\Http\Controllers\GoogleAuthController::class, 'callback']);
+
 Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 
 Route::get('/courses/{course}', function (Course $course) {
