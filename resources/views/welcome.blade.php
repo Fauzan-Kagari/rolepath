@@ -5,6 +5,46 @@
 @section('content')
 
     <!-- ═══════════════════════════════════════════
+         MAINTENANCE NOTIFICATION
+    ════════════════════════════════════════════ -->
+    <div id="maintenance-notice" class="relative bg-gradient-to-r from-gray-900 via-black to-gray-900 border-b-2 border-[#0ABF35] px-4 py-3 mt-16">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="flex-shrink-0 w-8 h-8 bg-[#0ABF35] rounded-full flex items-center justify-center">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                </span>
+                <div>
+                    <p class="text-sm font-bold text-white">⚠️ Maintenance / Rebuild In Progress</p>
+                    <p class="text-xs text-gray-400">Website sedang dalam masa pemeliharaan dan pengembangan. Beberapa fitur mungkin tidak dapat diakses untuk sementara waktu. Terima kasih atas pengertian Anda.</p>
+                </div>
+            </div>
+            <button onclick="dismissNotice()" class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors" aria-label="Tutup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('mnt_dismissed')) {
+                var el = document.getElementById('maintenance-notice');
+                if (el) el.style.display = 'none';
+            }
+        });
+        function dismissNotice() {
+            var el = document.getElementById('maintenance-notice');
+            if (el) {
+                el.style.display = 'none';
+                localStorage.setItem('mnt_dismissed', '1');
+            }
+        }
+    </script>
+
+    <!-- ═══════════════════════════════════════════
          HERO SECTION
     ════════════════════════════════════════════ -->
     <section class="relative min-h-[90vh] flex items-center bg-black overflow-hidden">
