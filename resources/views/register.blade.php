@@ -141,8 +141,8 @@
 
             </form>
 
-            <!-- Google Register -->
-            <div class="mt-6">
+            <!-- Google Register (dinonaktifkan sementara) -->
+            {{-- <div class="mt-6">
                 <a href="{{ route('google.login') }}"
                    class="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 text-sm uppercase tracking-widest hover:border-gray-400 hover:shadow-[4px_4px_0px_0px_#0ABF35] transition-all duration-200">
                     <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
@@ -153,7 +153,7 @@
                     </svg>
                     Daftar dengan Google
                 </a>
-            </div>
+            </div> --}}
 
             <!-- Divider -->
             <div class="flex items-center gap-3 my-6">
