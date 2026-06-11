@@ -4,6 +4,11 @@
     </IfModule>
 
     RewriteEngine On
+    RewriteBase /
+
+    # Redirect /build/* requests to public/build/*
+    RewriteCond %{REQUEST_URI} ^/build/(.*)$
+    RewriteRule ^build/(.*)$ public/build/$1 [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
