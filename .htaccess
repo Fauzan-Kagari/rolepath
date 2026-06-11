@@ -4,6 +4,12 @@
     </IfModule>
 
     RewriteEngine On
+    RewriteBase /
+
+    # Serve static files from public/ if they exist there
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+    RewriteRule ^(.*)$ public/$1 [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
