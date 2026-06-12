@@ -28,11 +28,49 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════
+         ACADEMIC DISCLAIMER POPUP
+    ════════════════════════════════════════════ -->
+    <div id="disclaimer-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 hidden">
+        <div class="relative bg-gray-900 border-2 border-[#0ABF35] max-w-xl w-full p-6 md:p-8 shadow-[0_0_40px_rgba(10,191,53,0.15)]">
+            <!-- Close button -->
+            <button onclick="dismissDisclaimer()" class="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors" aria-label="Tutup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Icon -->
+            <div class="flex items-center gap-3 mb-4">
+                <span class="w-10 h-10 bg-[#0ABF35] rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 9v2m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+                    </svg>
+                </span>
+                <h3 class="text-lg font-bold text-white">Academic Disclaimer</h3>
+            </div>
+
+            <p class="text-sm text-gray-300 leading-relaxed">
+                This website is developed solely as a final project for the Technopreneurship course. All educational materials and curriculum credits belong to theodinproject.com. Any similarities in naming, branding, or course structures with existing commercial platforms are purely coincidental and intended strictly for educational simulation purposes.
+            </p>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="dismissDisclaimer()" class="px-6 py-2.5 bg-[#0ABF35] text-gray-900 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors duration-200">
+                    I Understand
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('mnt_dismissed')) {
                 var el = document.getElementById('maintenance-notice');
                 if (el) el.style.display = 'none';
+            }
+            if (!localStorage.getItem('disc_dismissed')) {
+                var el = document.getElementById('disclaimer-modal');
+                if (el) el.classList.remove('hidden');
             }
         });
         function dismissNotice() {
@@ -40,6 +78,13 @@
             if (el) {
                 el.style.display = 'none';
                 localStorage.setItem('mnt_dismissed', '1');
+            }
+        }
+        function dismissDisclaimer() {
+            var el = document.getElementById('disclaimer-modal');
+            if (el) {
+                el.style.display = 'none';
+                localStorage.setItem('disc_dismissed', '1');
             }
         }
     </script>
@@ -234,20 +279,12 @@
 
             <!-- Course Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @php
-                    $courses = [
-                        ['title' => 'Introduction to HTML', 'duration' => '6 Hours', 'level' => 'Beginner'],
-                        ['title' => 'Dasar-Dasar Networking', 'duration' => '8 Hours', 'level' => 'Beginner'],
-                        ['title' => 'Python for Beginners', 'duration' => '10 Hours', 'level' => 'Beginner'],
-                        ['title' => 'Linux Fundamentals', 'duration' => '7 Hours', 'level' => 'Beginner'],
-                    ];
-                @endphp
 
-                @foreach($courses as $course)
+                @forelse($freeCourses as $course)
                     <article class="bg-white border-2 border-gray-200 flex flex-col group hover:border-gray-400 hover:shadow-[6px_6px_0px_0px_#0ABF35] transition-all duration-300">
                         <!-- Thumbnail -->
                         <div class="relative overflow-hidden bg-gray-200">
-                            <img src="https://placehold.co/400x240/0f172a/0ABF35?text={{ urlencode($course['title']) }}" alt="{{ $course['title'] }}" class="w-full h-40 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                            <img src="{{ $course->image_url ?? 'https://placehold.co/400x240/0f172a/0ABF35?text=' . urlencode($course->title) }}" alt="{{ $course->title }}" class="w-full h-40 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
                             <span class="absolute top-3 left-3 px-2.5 py-1 text-xs font-bold uppercase tracking-wider bg-[#0ABF35] text-gray-800 border border-[#0ABF35]">
                                 GRATIS
                             </span>
@@ -255,23 +292,27 @@
 
                         <!-- Body -->
                         <div class="p-5 flex flex-col flex-1">
-                            <span class="text-xs font-bold text-[#0ABF35] uppercase tracking-widest mb-1">Rolepath Course</span>
-                            <h3 class="font-bold text-gray-900 text-base leading-snug flex-1">{{ $course['title'] }}</h3>
+                            <span class="text-xs font-bold text-[#0ABF35] uppercase tracking-widest mb-1">{{ $course->category ?? 'Rolepath Course' }}</span>
+                            <h3 class="font-bold text-gray-900 text-base leading-snug flex-1">{{ $course->title }}</h3>
                             <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
                                 <div class="flex items-center gap-1.5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                                    <span class="font-medium">{{ $course['duration'] }}</span>
+                                    <span class="font-medium">Online</span>
                                 </div>
-                                <span class="px-2.5 py-1 border border-gray-200 text-gray-500 text-xs font-medium uppercase tracking-wide">{{ $course['level'] }}</span>
+                                <span class="px-2.5 py-1 border border-gray-200 text-gray-500 text-xs font-medium uppercase tracking-wide">Beginner</span>
                             </div>
                         </div>
 
                         <!-- CTA -->
-                        <a href="{{ route('courses') }}" class="block w-full bg-[#0ABF35] text-gray-800 font-bold text-xs text-center py-3 uppercase tracking-widest border-t-2 border-[#0ABF35] group-hover:bg-gray-800 group-hover:text-white transition-colors duration-300">
+                        <a href="{{ route('courses.show', $course) }}" class="block w-full bg-[#0ABF35] text-gray-800 font-bold text-xs text-center py-3 uppercase tracking-widest border-t-2 border-[#0ABF35] group-hover:bg-gray-800 group-hover:text-white transition-colors duration-300">
                             MULAI BELAJAR →
                         </a>
                     </article>
-                @endforeach
+                @empty
+                    <div class="col-span-full text-center py-16 bg-white border-2 border-dashed border-gray-300">
+                        <p class="text-gray-400 font-bold">Belum ada kursus gratis tersedia.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>

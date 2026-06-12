@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Course;
 
 Route::get('/', function () {
-    return view('welcome');
+    $freeCourses = Course::where('access', 'free')->latest()->take(4)->get();
+    return view('welcome', compact('freeCourses'));
 })->name('home');
 
 Route::get('/courses', function () {

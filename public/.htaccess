@@ -6,9 +6,10 @@
     RewriteEngine On
     RewriteBase /
 
-    # Redirect /build/* requests to public/build/*
-    RewriteCond %{REQUEST_URI} ^/build/(.*)$
-    RewriteRule ^build/(.*)$ public/build/$1 [L]
+    # Serve static files from public/ if they exist there
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+    RewriteRule ^(.*)$ public/$1 [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

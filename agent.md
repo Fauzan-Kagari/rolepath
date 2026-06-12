@@ -70,3 +70,24 @@
         *   Node: Circle with number "3" (Background: Light/White, Text: Dark).
         *   Title: "Praktik Langsung"
         *   Description: "Belajar langsung dari ahlinya melalui video penjelasan singkat, lalu terapkan ilmunya seketika dengan sebuah contoh study case"
+IMPORTANT FOR HOSTINGER DEPLOYMENT
+
+This project is hosted on Hostinger Business Hosting.
+
+The web root is:
+public_html
+
+NOT:
+public_html/public
+
+After every deployment:
+
+1. Copy public/index.php to public_html/index.php
+2. Copy public/.htaccess to public_html/.htaccess
+3. Copy public/build to public_html/build
+4. Run php artisan optimize:clear
+
+Never remove:
+- public_html/index.php
+- public_html/.htaccess
+- public_html/build
