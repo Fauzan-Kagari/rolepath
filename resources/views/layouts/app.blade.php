@@ -81,7 +81,7 @@
                 @guest
                     <div class="flex flex-col items-center gap-4 mt-4">
                         <a href="{{ url('/login') }}" class="text-sm text-gray-300 hover:text-white border border-gray-700 hover:border-white px-4 py-2 transition-colors">Masuk</a>
-                        <a href="{{ url('/register') }}" class="bg-[#0ABF35] text-black px-5 py-2 text-sm font-bold hover:bg-white transition-colors">Daftar</a>
+<a href="{{ url('/register') }}" class="hidden md:inline-block bg-[#0ABF35] text-black px-5 py-2 text-sm font-bold hover:bg-white transition-colors">Daftar</a>
                     </div>
                 @endguest
 
