@@ -71,7 +71,12 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="md:hidden fixed inset-0 bg-black z-40 translate-x-full transition-transform duration-300">
+        <div id="mobile-menu" class="md:hidden fixed inset-0 bg-black/95 z-40 translate-x-full transition-transform duration-300">
+            <button id="mobile-close-btn" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center border border-gray-600 hover:border-white transition-colors z-50" type="button" aria-label="Tutup menu">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
             <div class="flex flex-col items-center justify-center h-full gap-8 text-lg">
                 <a href="{{ route('home') }}" class="text-gray-300 hover:text-white transition {{ request()->routeIs('home') ? 'text-white font-bold' : '' }}" onclick="closeMenu()">Home</a>
                 <a href="{{ route('pricing') }}" class="text-gray-300 hover:text-white transition {{ request()->routeIs('pricing') ? 'text-white font-bold' : '' }}" onclick="closeMenu()">Pricing Plan</a>
@@ -161,22 +166,49 @@
     (function() {
         var btn = document.getElementById('mobile-menu-btn');
         var menu = document.getElementById('mobile-menu');
+        var closeBtn = document.getElementById('mobile-close-btn');
         var openIcon = document.getElementById('menu-icon-open');
         var closeIcon = document.getElementById('menu-icon-close');
 
-        if (btn && menu) {
-            btn.addEventListener('click', function() {
-                menu.classList.toggle('translate-x-full');
-                openIcon.classList.toggle('hidden');
-                closeIcon.classList.toggle('hidden');
-            });
+        function openMenu() {
+            menu.classList.remove('translate-x-full');
+            openIcon.classList.add('hidden');
+            closeIcon.classList.remove('hidden');
         }
 
-        window.closeMenu = function() {
+        function closeMenuFn() {
             menu.classList.add('translate-x-full');
             openIcon.classList.remove('hidden');
             closeIcon.classList.add('hidden');
-        };
+        }
+
+        window.closeMenu = closeMenuFn;
+
+        if (btn && menu) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (menu.classList.contains('translate-x-full')) {
+                    openMenu();
+                } else {
+                    closeMenuFn();
+                }
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeMenuFn();
+            });
+        }
+
+        if (menu) {
+            menu.addEventListener('click', function(e) {
+                if (e.target === menu) {
+                    closeMenuFn();
+                }
+            });
+        }
     })();
 </script>
 </body>
