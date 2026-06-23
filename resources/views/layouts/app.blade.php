@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="md:hidden fixed inset-0 bg-black/95 z-40 translate-x-full transition-transform duration-300">
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-black/95 z-40">
             <button id="mobile-close-btn" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center border border-gray-600 hover:border-white transition-colors z-50" type="button" aria-label="Tutup menu">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M6 18L18 6M6 6l12 12" />
@@ -171,13 +171,13 @@
         var closeIcon = document.getElementById('menu-icon-close');
 
         function openMenu() {
-            menu.classList.remove('translate-x-full');
+            menu.classList.remove('hidden');
             openIcon.classList.add('hidden');
             closeIcon.classList.remove('hidden');
         }
 
         function closeMenuFn() {
-            menu.classList.add('translate-x-full');
+            menu.classList.add('hidden');
             openIcon.classList.remove('hidden');
             closeIcon.classList.add('hidden');
         }
@@ -187,7 +187,7 @@
         if (btn && menu) {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                if (menu.classList.contains('translate-x-full')) {
+                if (menu.classList.contains('hidden')) {
                     openMenu();
                 } else {
                     closeMenuFn();
