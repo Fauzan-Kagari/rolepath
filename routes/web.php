@@ -66,8 +66,46 @@ Route::post('/courses/{course}/lessons/{lesson}/complete', function (Course $cou
 })->middleware('auth')->name('courses.lesson.complete');
 
 Route::get('/dashboard', function () {
+    $user = auth()->user();
     $totalCourses = Course::count();
-    return view('dashboard', compact('totalCourses'));
+
+    $enrolledCourses = Course::whereHas('lessons.completedByUsers', function ($q) use ($user) {
+        $q->where('user_id', $user->id);
+    })->get();
+
+    $totalCompletedLessons = $user->completedLessons()->count();
+
+    $lastCompletedLesson = $user->completedLessons()
+        ->with('course')
+        ->orderBy('lesson_user.completed_at', 'desc')
+        ->first();
+
+    $continueCourse = null;
+    $continueProgress = 0;
+    $continueLastLesson = null;
+
+    if ($lastCompletedLesson && $lastCompletedLesson->course) {
+        $continueCourse = $lastCompletedLesson->course;
+        $continueProgress = $continueCourse->progressPercentage($user->id);
+        $continueLastLesson = $lastCompletedLesson;
+    }
+
+    $completedCoursesCount = 0;
+    foreach ($enrolledCourses as $course) {
+        if ($course->progressPercentage($user->id) >= 100) {
+            $completedCoursesCount++;
+        }
+    }
+
+    return view('dashboard', compact(
+        'totalCourses',
+        'enrolledCourses',
+        'totalCompletedLessons',
+        'continueCourse',
+        'continueProgress',
+        'continueLastLesson',
+        'completedCoursesCount'
+    ));
 })->middleware('auth')->name('dashboard');
 
 Route::get('/talent-hub', function () {
