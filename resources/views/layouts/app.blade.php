@@ -60,11 +60,37 @@
                     Hubungi Kami
                 </a>
 
-                <button class="md:hidden w-9 h-9 flex items-center justify-center border border-gray-700 hover:border-white transition-colors" aria-label="Menu">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <button id="mobile-menu-btn" class="md:hidden w-9 h-9 flex items-center justify-center border border-gray-700 hover:border-white transition-colors relative z-50" aria-label="Menu" type="button">
+                    <svg id="menu-icon-open" class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
+                    <svg id="menu-icon-close" class="w-5 h-5 text-white hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden fixed inset-0 bg-black z-40 translate-x-full transition-transform duration-300">
+            <div class="flex flex-col items-center justify-center h-full gap-8 text-lg">
+                <a href="{{ route('home') }}" class="text-gray-300 hover:text-white transition {{ request()->routeIs('home') ? 'text-white font-bold' : '' }}" onclick="closeMenu()">Home</a>
+                <a href="{{ route('pricing') }}" class="text-gray-300 hover:text-white transition {{ request()->routeIs('pricing') ? 'text-white font-bold' : '' }}" onclick="closeMenu()">Pricing Plan</a>
+                <a href="{{ route('courses') }}" class="text-gray-300 hover:text-white transition {{ request()->routeIs('courses') ? 'text-white font-bold' : '' }}" onclick="closeMenu()">Course</a>
+                <a href="{{ route('about') }}" class="text-gray-300 hover:text-white transition {{ request()->routeIs('about') ? 'text-white font-bold' : '' }}" onclick="closeMenu()">About us</a>
+
+                @guest
+                    <div class="flex flex-col items-center gap-4 mt-4">
+                        <a href="{{ url('/login') }}" class="text-sm text-gray-300 hover:text-white border border-gray-700 hover:border-white px-4 py-2 transition-colors">Masuk</a>
+                        <a href="{{ url('/register') }}" class="bg-[#0ABF35] text-black px-5 py-2 text-sm font-bold hover:bg-white transition-colors">Daftar</a>
+                    </div>
+                @endguest
+
+                <a href="#" class="flex items-center gap-1.5 text-sm text-[#0ABF35] border-2 border-[#0ABF35] px-4 py-1.5 font-bold hover:bg-[#0ABF35] hover:text-black transition-colors mt-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Hubungi Kami
+                </a>
             </div>
         </div>
     </header>
@@ -131,5 +157,27 @@
         </div>
     </footer>
 
+<script>
+    (function() {
+        var btn = document.getElementById('mobile-menu-btn');
+        var menu = document.getElementById('mobile-menu');
+        var openIcon = document.getElementById('menu-icon-open');
+        var closeIcon = document.getElementById('menu-icon-close');
+
+        if (btn && menu) {
+            btn.addEventListener('click', function() {
+                menu.classList.toggle('translate-x-full');
+                openIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+        }
+
+        window.closeMenu = function() {
+            menu.classList.add('translate-x-full');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+        };
+    })();
+</script>
 </body>
 </html>
