@@ -126,4 +126,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/lessons/{id}/edit', [App\Http\Controllers\AdminController::class, 'editLesson']);
     Route::put('/admin/lessons/{id}', [App\Http\Controllers\AdminController::class, 'updateLesson']);
     Route::delete('/admin/lessons/{id}', [App\Http\Controllers\AdminController::class, 'deleteLesson']);
+
+    // --- Rute Kelola Pengguna ---
+    Route::put('/admin/users/{id}/role', [App\Http\Controllers\AdminController::class, 'updateUserRole']);
 });

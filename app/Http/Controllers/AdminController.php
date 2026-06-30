@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -21,8 +22,9 @@ class AdminController extends Controller
         $this->checkAdmin();
 
         $courses = Course::latest()->get();
+        $users = User::latest()->get();
         
-        return view('admin.dashboard', compact('courses'));
+        return view('admin.dashboard', compact('courses', 'users'));
     }
 
     public function storeCourse(Request $request)
@@ -147,5 +149,19 @@ class AdminController extends Controller
         $lesson->delete();
 
         return redirect('/admin/courses/' . $course_id . '/lessons')->with('success', 'Materi berhasil dihapus permanen!');
+    }
+
+    public function updateUserRole(Request $request, $id)
+    {
+        $this->checkAdmin();
+
+        $request->validate([
+            'role' => 'required|string|in:student,premium,recruiter',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update(['role' => $request->role]);
+
+        return back()->with('success', 'Role pengguna berhasil diperbarui menjadi ' . strtoupper($request->role) . '!');
     }
 }
